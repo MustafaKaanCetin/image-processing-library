@@ -7,6 +7,7 @@ find_package(JPEG REQUIRED)
 
 add_executable(ImageProcessing main.cpp
         PreProcessing.cpp
-        PreProcessing.h)
+        PreProcessing.h
+)
 
 target_link_libraries(ImageProcessing JPEG::JPEG)

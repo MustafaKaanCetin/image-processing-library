@@ -50,10 +50,13 @@ Image PreProcessing::rgb_to_gray(const Image &image) {
     gs_img.channels = 1;
     gs_img.image.resize(image.image.size()/3);
 
-    for (int i = 0; i < image.image.size()/3; i++) {
-        const double c_linear = 0.2126 * image.image.at(3*i) + 0.7152 * image.image.at(3*i+1) + 0.0722 * image.image.at(3*2);
-        const unsigned int val = floor(c_linear);
-        gs_img.image.at(i) = val;
+    const unsigned char* src = image.image.data();
+    unsigned char* dst = gs_img.image.data();
+    const size_t size = image.width * image.height;
+
+    for (size_t i = 0; i < size; i++) {
+        const double c_linear = 0.2126 * src[3*i] + 0.7152 * src[3*i+1] + 0.0722 * src[3*i+2];
+        dst[i] = static_cast<unsigned char>(floor(c_linear));
     }
 
     return gs_img;
@@ -126,6 +129,3 @@ void PreProcessing::save(const char *filename, const Image &image, int quality) 
     jpeg_destroy_compress(&cinfo);
     fclose(file);
 }
-
-
-
